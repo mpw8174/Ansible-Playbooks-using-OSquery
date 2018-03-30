@@ -1,0 +1,39 @@
+---
+- hosts: windows
+  tasks:
+  - name: Get hostname and Domain
+    win_shell: C:\ProgramData\osquery\osqueryi "select hostname from system_info"
+    register: hostname
+  - debug: var=hostname
+  - name: Get OS and Patch level
+    win_shell: C:\ProgramData\osquery\osqueryi "select name,version from os_version"
+    register: os_patch
+  - debug: var=os_patch
+  - name: Get IP information
+    win_shell: C:\ProgramData\osquery\osqueryi "select interface,address,type from interface_addresses"
+    register: ip
+  - debug: var=ip
+  - name: Get local users
+    win_shell: C:\ProgramData\osquery\osqueryi "select username,type,uid from users where type='local'"
+    register: users
+  - debug: var=users
+
+- hosts: ubuntu
+  tasks:
+  - name: Get hostname and Domain
+    shell: osqueryi "select hostname from system_info"
+    register: lhost
+  - debug: var=lhost
+  - name: Get OS and Patch level
+    shell: osqueryi "select name,version from os_version"
+    register: version
+  - debug: var=version
+  - name: Get IP information
+    shell: osqueryi "select interface,address from interface_addresses"
+    register: interface
+  - debug: var=interface
+  - name: Get local users
+    shell: osqueryi "select username,uid from users"
+    register: user
+  - debug: var=user
+

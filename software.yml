@@ -1,0 +1,30 @@
+---
+- hosts: windows
+  tasks:
+  - name: Query running services...
+    win_shell: C:\ProgramData\osquery\osqueryi "select display_name from services"
+    register: services
+  - debug: var=services
+  - name: Query installed programs...
+    win_shell: C:\ProgramData\osquery\osqueryi "select name,version,install_date from programs"
+    register: programs
+  - debug: var=programs
+  - name: Query startup executables...
+    win_shell: C:\ProgramData\osquery\osqueryi "select name,path from autoexec"
+    register: autoexec
+  - debug: var=autoexec
+
+- hosts: ubuntu
+  tasks:
+  - name: Query running services...
+    shell: osqueryi "select name from etc_services"
+    register: etc_serv
+  - debug: var=etc_serv
+  - name: Query installed programs
+    shell: osqueryi "select name,version from deb_packages"
+    register: ux_prog
+  - debug: var=ux_prog
+  - name: Query startup executables...
+    shell: ls /etc/xdg/autostart
+    register: startup
+  - debug: var=startup

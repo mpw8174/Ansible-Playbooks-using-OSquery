@@ -1,0 +1,19 @@
+---
+- hosts: windows
+  tasks:
+  - name: Recent user logons
+  - name: Running processes
+  - name: Suspicious outbound conncetions
+    win_shell: C:\ProgramData\osquery\osqueryi "select distinct process.name,listening.port,listening.protocol,listening.family,listening.address,process.pid,process.path,process.on_disk,process.parent,process.start_time from processes as process join listening_ports as listening on process.pid=listening.pid where listening.port not in (80,443)"
+    register: win_out_con
+  - debug: var=win_out_con
+
+- hosts: ubuntu
+  tasks:
+  - name: Recent user logons
+  - name: Running processes
+  - name: Suspicious outbound conncetions
+    shell: osqueryi "select distinct process.name,listening.port,listening.protocol,listening.family,listening.address,process.pid,process.path,process.on_disk,process.parent,process.start_time from processes as process join listening_ports as listening on process.pid=listening.pid where listening.port not in (80,443)"
+    register: out_con
+  - debug: var=out_con
+
