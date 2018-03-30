@@ -2,5 +2,5 @@
 ansible stuff
 
 Authors:
-Sean Craska
+Sean Craska,
 Mark White
